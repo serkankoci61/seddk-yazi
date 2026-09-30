@@ -1,0 +1,67 @@
+{
+  "ref": "2026/147",
+  "tarih": "30.09.2026",
+  "konu": "Yakın İzleme Kapsamında Dış Hizmet Alımı Bilgilendirmesi (Örnek Danışmanlık Ltd. Şti.)",
+  "ilgi": [
+    "Kurumunuzun E-97354901-045.01-5033535 sayılı yazısı (23.09.2026 tarih ve 1937 sayılı Kurul Kararı)."
+  ],
+  "govde": [
+    "Sözleşme taslağı Ek-1'de, risk değerlendirme formu Ek-2'de sunulmuştur.",
+    {
+      "tablo": {
+        "basliklar": [
+          "Başlık",
+          "Bilgi"
+        ],
+        "satirlar": [
+          [
+            "Hizmet sağlayıcı",
+            "Örnek Danışmanlık Ltd. Şti. (VKN: [●])"
+          ],
+          [
+            "Hizmetin konusu ve kapsamı",
+            "Kurumsal risk yönetimi danışmanlık hizmeti"
+          ],
+          [
+            "Faaliyetteki yeri",
+            "Kritik değildir; iç süreç destek hizmetidir"
+          ],
+          [
+            "Sözleşme tarihi ve süresi",
+            "[●tarih] – 12 ay"
+          ],
+          [
+            "Bedel",
+            "320.000,00 TL (KDV hariç)"
+          ],
+          [
+            "Alım gerekçesi",
+            "Yıllık risk değerlendirme çalışmasının dışarıdan desteklenmesi"
+          ],
+          [
+            "Yetkili onay",
+            "YK [●tarih] ve [●no] sayılı karar"
+          ],
+          [
+            "Risk değerlendirmesi",
+            "Düşük; SLA ve gizlilik hükümleri sözleşmede mevcuttur"
+          ],
+          [
+            "İlişkili taraf durumu",
+            "Yoktur"
+          ]
+        ],
+        "genislikler_cm": [
+          4.5,
+          11.5
+        ]
+      }
+    },
+    "Sözleşme taslağı Ek-1'de, risk değerlendirme formu Ek-2'de sunulmuştur.",
+    "Bilgilerinize arz ederiz."
+  ],
+  "ekler": [
+    "Sözleşme taslağı",
+    "Risk değerlendirme formu"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "ref": "2026/151",
+  "tarih": "30.09.2026",
+  "konu": "İnternet Bankacılığı Para Transferi Yetkilerinin Kaldırılması Hk.",
+  "ilgi": [
+    "Kurumunuzun E-97354901-045.01-5033535 sayılı yazısı (23.09.2026 tarih ve 1937 sayılı Kurul Kararı)."
+  ],
+  "govde": [
+    "İlgi yazınız ile Sigortacılık ve Özel Emeklilik Düzenleme ve Denetleme Kurulu'nun 23.09.2026 tarih ve 1937 sayılı Kararı uyarınca Şirketimizin yakın izleme kapsamına alındığı bildirilmiştir. Anılan Karar'ın 3 üncü maddesi uyarınca internet bankacılığı aracılığıyla para transferi yetkilerinin (Şirketimizin kendi hesapları arasındaki işlemler hariç) tümüyle kaldırılmasına ilişkin yapılan işlemler aşağıda özetlenmiştir.",
+    {
+      "tablo": {
+        "basliklar": [
+          "Banka",
+          "Yetki Kaldırma Tarihi",
+          "Kendi Hesapları Arası İşlem İzni",
+          "Yeni Ödeme Yöntemi"
+        ],
+        "satirlar": [
+          [
+            "Türkiye Cumhuriyeti Ziraat Bankası A.Ş.",
+            "26.09.2026",
+            "Açık (3 hesap)",
+            "Şube üzerinden havale/EFT"
+          ],
+          [
+            "Türkiye İş Bankası A.Ş.",
+            "29.09.2026",
+            "Açık (1 hesap)",
+            "Şube üzerinden havale/EFT"
+          ]
+        ],
+        "genislikler_cm": [
+          4.5,
+          2.8,
+          3.7,
+          5.0
+        ]
+      }
+    },
+    "Bankalardan alınan yetki kaldırma onay yazıları ekte sunulmuştur.",
+    "Bilgilerinize arz ederiz."
+  ],
+  "ekler": [
+    "Ziraat Bankası yetki kaldırma onay yazısı",
+    "İş Bankası yetki kaldırma onay yazısı"
+  ]
+}

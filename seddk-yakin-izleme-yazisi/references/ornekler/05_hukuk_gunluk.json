@@ -1,0 +1,67 @@
+{
+  "ref": "2026/148",
+  "tarih": "30.09.2026",
+  "konu": "Hukuk Dosyası Ödemelerine İlişkin Günlük Bildirim (29.09.2026 Tarihi)",
+  "ilgi": [
+    "Kurumunuzun E-97354901-045.01-5033535 sayılı yazısı (23.09.2026 tarih ve 1937 sayılı Kurul Kararı).",
+    "Şirketimizin 25.09.2026 tarih ve 2026/130 sayılı hesap bildirim yazımız."
+  ],
+  "govde": [
+    "İlgi (a) yazınız ile Sigortacılık ve Özel Emeklilik Düzenleme ve Denetleme Kurulu'nun 23.09.2026 tarih ve 1937 sayılı Kararı uyarınca Şirketimizin yakın izleme kapsamına alındığı bildirilmiştir. Anılan Karar uyarınca 29.09.2026 tarihinde hukuk dosyaları kapsamında yapılan ödemeler aşağıda tablo halinde sunulmuştur.",
+    {
+      "tablo": {
+        "basliklar": [
+          "Sıra",
+          "Dosya No / Mahkeme",
+          "Alıcı",
+          "Ödeme Nedeni",
+          "Tutar (TL)",
+          "Kanal"
+        ],
+        "satirlar": [
+          [
+            "1",
+            "2024/456 E. – İstanbul 5. Asliye Ticaret",
+            "Av. Mehmet Yılmaz",
+            "Vekâlet ücreti (ara karar)",
+            "45.000,00",
+            "Havale"
+          ],
+          [
+            "2",
+            "2023/112 E. – Ankara 3. İdare",
+            "Alacaklı vekili",
+            "İcra tahsilatı",
+            "128.750,00",
+            "EFT"
+          ]
+        ],
+        "genislikler_cm": [
+          1.2,
+          4.5,
+          3.0,
+          3.5,
+          2.3,
+          1.5
+        ],
+        "sayi_sutunlari": [
+          4
+        ],
+        "toplam_satiri": [
+          "",
+          "",
+          "",
+          "TOPLAM",
+          "173.750,00",
+          ""
+        ]
+      }
+    },
+    "Serbest tutardan gün başı bakiye: 19.450.000,00 TL; günün ödemeleri: 173.750,00 TL; gün sonu kalan: 19.276.250,00 TL.",
+    "Gün içinde yapılan ödemelere ait dekontlar ekte sunulmuştur.",
+    "Bilgilerinize arz ederiz."
+  ],
+  "ekler": [
+    "Ödeme dekontları (2 adet)"
+  ]
+}

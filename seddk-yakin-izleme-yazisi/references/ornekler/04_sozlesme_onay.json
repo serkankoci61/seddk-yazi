@@ -1,0 +1,65 @@
+{
+  "ref": "2026/145",
+  "tarih": "30.09.2026",
+  "konu": "500.000 TL Üzerindeki Sözleşmeye İlişkin Kurum Onayı Talebi (BT Altyapı Bakım – Delta Teknoloji A.Ş.)",
+  "ilgi": [
+    "Kurumunuzun E-97354901-045.01-5033535 sayılı yazısı (23.09.2026 tarih ve 1937 sayılı Kurul Kararı)."
+  ],
+  "govde": [
+    "İlgi yazınız ile Sigortacılık ve Özel Emeklilik Düzenleme ve Denetleme Kurulu'nun 23.09.2026 tarih ve 1937 sayılı Kararı uyarınca Şirketimizin yakın izleme kapsamına alındığı bildirilmiştir. Anılan Karar uyarınca, sigortacılık ana faaliyeti dışında yükümlülük doğuran ve tutarı 500.000 TL'yi aşan sözleşmeler Kurumunuzun onayına tabi tutulmuştur. Bu çerçevede aşağıda özeti sunulan sözleşme için onayınız talep edilmektedir.",
+    {
+      "tablo": {
+        "basliklar": [
+          "Başlık",
+          "Bilgi"
+        ],
+        "satirlar": [
+          [
+            "Karşı taraf",
+            "Delta Teknoloji A.Ş. (VKN: 1234567890)"
+          ],
+          [
+            "Sözleşme konusu",
+            "BT altyapı bakım ve destek hizmetleri"
+          ],
+          [
+            "Süre",
+            "01.11.2026 – 31.10.2028 (24 ay)"
+          ],
+          [
+            "Toplam bedel",
+            "1.850.000,00 TL (KDV hariç; KDV dahil 2.182.000,00 TL)"
+          ],
+          [
+            "Ödeme planı",
+            "Yıllık peşin, iki eşit taksit"
+          ],
+          [
+            "Gerekçe",
+            "Mevcut sistemlerin sürekliliği ve siber güvenlik gereksinimleri"
+          ],
+          [
+            "Yetkili onay",
+            "YK 25.09.2026 tarih ve 18 sayılı karar"
+          ],
+          [
+            "Risk değerlendirmesi",
+            "Orta; SLA ve cezai şartlar taslakta yer almaktadır"
+          ]
+        ],
+        "genislikler_cm": [
+          4.5,
+          11.5
+        ]
+      }
+    },
+    "Söz konusu sözleşme, Kurumunuzun onayı alınmadan imzalanmayacak ve yürürlüğe girmeyecektir.",
+    "Gereğini ve onayınızı arz ederiz."
+  ],
+  "ekler": [
+    "Sözleşme taslağı",
+    "YK 25.09.2026/18 sayılı karar sureti",
+    "Risk değerlendirme formu",
+    "Teklif karşılaştırması"
+  ]
+}

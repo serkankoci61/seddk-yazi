@@ -1,0 +1,77 @@
+{
+  "ref": "2026/155",
+  "tarih": "30.09.2026",
+  "konu": "Yakın İzleme Kapsamında Bilgi Sunumu (Eylül 2026 Dönemi)",
+  "ilgi": [
+    "Kurumunuzun E-97354901-045.01-5033535 sayılı yazısı (23.09.2026 tarih ve 1937 sayılı Kurul Kararı)."
+  ],
+  "govde": [
+    "İlgi yazınız ile Sigortacılık ve Özel Emeklilik Düzenleme ve Denetleme Kurulu'nun 23.09.2026 tarih ve 1937 sayılı Kararı uyarınca Şirketimizin yakın izleme kapsamına alındığı bildirilmiştir. Anılan Karar kapsamında Eylül 2026 döneminde Kurumunuza bildirimi gereken işlemlere ilişkin bilgiler aşağıda sunulmuştur.",
+    {
+      "baslik": "1. Ödeme Bilgileri"
+    },
+    {
+      "tablo": {
+        "basliklar": [
+          "Sıra",
+          "Ödeme Tarihi",
+          "Alıcı Unvanı",
+          "Ödeme Nedeni",
+          "Tutar (TL)",
+          "Ödeme Kanalı"
+        ],
+        "satirlar": [
+          [
+            "1",
+            "12.09.2026",
+            "ABC Yazılım A.Ş.",
+            "Yıllık lisans bedeli (Fatura: 2026/884)",
+            "185.000,00",
+            "Havale / Ziraat Bankası"
+          ],
+          [
+            "2",
+            "18.09.2026",
+            "XYZ Danışmanlık Ltd.",
+            "Risk danışmanlığı ücreti (Söz. 2026-R-03)",
+            "240.500,00",
+            "EFT / İş Bankası"
+          ]
+        ],
+        "genislikler_cm": [
+          1.2,
+          2.2,
+          3.5,
+          4.3,
+          2.2,
+          2.6
+        ],
+        "sayi_sutunlari": [
+          4
+        ],
+        "toplam_satiri": [
+          "",
+          "",
+          "",
+          "TOPLAM",
+          "425.500,00",
+          ""
+        ]
+      }
+    },
+    "Tabloda yer alan ödemeler komisyon, hasar, reasürans, maaş, vergi ve diğer yasal yükümlülük niteliğinde değildir; hukuk dosyaları kapsamındaki ödemeler ayrıca günlük olarak bildirilmektedir.",
+    {
+      "baslik": "2. Yönetim Kurulu Kararı"
+    },
+    "Şirketimiz Yönetim Kurulu'nun 24.09.2026 tarih ve 21 sayılı kararının sureti Ek-1'de sunulmuştur.",
+    {
+      "baslik": "3. Dış Hizmet Alımı"
+    },
+    "Örnek Danışmanlık Ltd. Şti. ile akdedilecek kurumsal risk yönetimi danışmanlık hizmetine ilişkin bilgiler Ek-2'de sunulmuştur.",
+    "Bilgilerinize arz ederiz."
+  ],
+  "ekler": [
+    "YK 24.09.2026 tarih ve 21 sayılı karar sureti",
+    "Dış hizmet alımı bilgi formu"
+  ]
+}

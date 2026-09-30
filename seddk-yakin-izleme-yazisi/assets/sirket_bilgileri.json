@@ -1,0 +1,27 @@
+{
+  "sirket_adi": "DOGA SİGORTA ANONİM ŞİRKETİ",
+  "sirket_adi_kisa": "DOGA SİGORTA A.Ş.",
+  "muhatap_satirlari": [
+    "SİGORTACILIK VE ÖZEL EMEKLİLİK",
+    "DÜZENLEME VE DENETLEME KURUMU",
+    "İSTANBUL"
+  ],
+  "ust_bosluk_pt": 24,
+  "karar_kunyesi": {
+    "ust_yazi_sayisi": "E-97354901-045.01-5033535",
+    "karar_tarihi": "23.09.2026",
+    "karar_sayisi": "1937",
+    "ana_ilgi": "Kurumunuzun E-97354901-045.01-5033535 sayılı yazısı (23.09.2026 tarih ve 1937 sayılı Kurul Kararı).",
+    "kurum_kep": "seddk@hs01.kep.tr"
+  },
+  "varsayilan_imzacilar": [
+    {
+      "ad": "Serkan KOÇ",
+      "unvan": "Müdür"
+    },
+    {
+      "ad": "Kuntay BAYDAR",
+      "unvan": "Genel Müdür Yardımcısı"
+    }
+  ]
+}

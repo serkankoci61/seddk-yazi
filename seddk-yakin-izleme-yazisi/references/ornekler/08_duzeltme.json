@@ -1,0 +1,46 @@
+{
+  "ref": "2026/150",
+  "tarih": "30.09.2026",
+  "konu": "Yakın İzleme Kapsamında Ödeme Bilgilendirmesi Bildirimine İlişkin Düzeltme (İlgi (b) Yazımız)",
+  "ilgi": [
+    "Kurumunuzun E-97354901-045.01-5033535 sayılı yazısı (23.09.2026 tarih ve 1937 sayılı Kurul Kararı).",
+    "Şirketimizin 28.09.2026 tarih ve 2026/140 sayılı yazımız."
+  ],
+  "govde": [
+    "İlgi (a) yazınız ile Sigortacılık ve Özel Emeklilik Düzenleme ve Denetleme Kurulu'nun 23.09.2026 tarih ve 1937 sayılı Kararı uyarınca Şirketimizin yakın izleme kapsamına alındığı bildirilmiştir. İlgi (b) yazımızla sunulan ödeme bilgilendirmesinde 2 sıra numaralı satırda tutar hatalı yazılmış olup, doğru bilgiler aşağıda sunulmaktadır.",
+    {
+      "tablo": {
+        "basliklar": [
+          "Sıra",
+          "Alan",
+          "Önceki (hatalı)",
+          "Düzeltilmiş"
+        ],
+        "satirlar": [
+          [
+            "2",
+            "Tutar (TL)",
+            "240.000,00",
+            "240.500,00"
+          ]
+        ],
+        "genislikler_cm": [
+          1.5,
+          3.5,
+          5.5,
+          5.5
+        ],
+        "sayi_sutunlari": [
+          2,
+          3
+        ]
+      }
+    },
+    "Dönem toplamı buna göre 425.500,00 TL olarak düzeltilmiştir. Diğer bilgiler aynıdır.",
+    "Düzeltilmiş ödeme tablosu ekte sunulmuştur.",
+    "Bilgilerinize ve gereğine arz ederiz."
+  ],
+  "ekler": [
+    "Düzeltilmiş ödeme tablosu"
+  ]
+}
