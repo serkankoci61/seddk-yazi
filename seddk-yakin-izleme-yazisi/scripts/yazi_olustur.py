@@ -72,6 +72,7 @@ KAPANIS = re.compile(r"arz ederiz\.$")
 TL_RE = re.compile(r"^\d{1,3}(\.\d{3})*,\d{2}$")
 ILGI_ATIF_RE = re.compile(r"İlgi \(([a-z])\)")
 EK_NO_RE = re.compile(r"Ek[- ]?(\d+)")
+EK_ATIF_RE = re.compile(r"\b(?:[Ee]kte\b|[Ee]k[- ]?\d|[Ee]k'|\bilişik|Ekler\b)")
 
 
 def parse_tl(s):
@@ -364,9 +365,9 @@ def validate_input(data, sirket):
                 warnings.append("Gövdede 'Ek-...' atfı var ama ekler listesi boş")
             elif mx > len(ekler):
                 errors.append(f"Gövdede Ek-{mx} atfı var ama ekler listesinde {len(ekler)} madde var")
-        if ekler and not ek_nolar and not re.search(r"[Ee]k(?:'t?[eİı]|te|te sunul)", blob):
+        if ekler and not ek_nolar and not EK_ATIF_RE.search(blob):
             warnings.append("Ekler listesi dolu ama gövdede hiçbir ek atfı ('ekte sunulmuştur', 'Ek-1' vb.) yok")
-        if not ekler and re.search(r"[Ee]k(?:'t?[eİı]|te)", blob):
+        if not ekler and EK_ATIF_RE.search(blob):
             warnings.append("Gövdede ek atfı geçiyor ama ekler listesi yok")
 
         # --- Tablo aritmetik ve biçim kontrolleri ---
