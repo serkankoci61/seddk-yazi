@@ -1,7 +1,7 @@
 ---
 name: seddk-yakin-izleme-yazisi
 description: Use when the user needs any official letter or periodic report to SEDDK under the 23.09.2026 date and 1937-numbered Board decision putting DOGA Sigorta A.Ş. under close surveillance (yakın izleme). Covers the MONTHLY close-surveillance report (Veri Deseni xlsx + cover letter, due by the 15th of each month, signed by the internal audit manager and the board member responsible for internal systems, per E-51048673-010.05-5045010), plus event-driven letters — contract approval requests above 500.000 TL, daily law-file payment notifications, the 20.000.000 TL blocked-amount account notification, internet banking transfer-authority removal, correction/additional-info letters. Also triggers on "SEDDK'ya yazı", "aylık rapor", "veri deseni", "Kuruma bildirim", "yakın izleme raporu", "hukuk ödemesi bildirimi", "düzeltme yazısı". Produces a Konu/İlgi/Açıklama/Ek structured, dual-signed Word (.docx) letter and the filled Kurum-format Excel (.xlsx), with pre-flight scope and arithmetic validation.
-version: 4.0.0
+version: 4.1.0
 author: DOGA Sigorta İç Denetim / Hermes Agent
 license: MIT
 metadata:
@@ -81,6 +81,25 @@ Kullanıcı belgeleri bu klasörlere koyar; rapor bu klasörlerdeki verilere gö
 Dosya adlarında tarih ve konu bulunmalı (örn. `2026-10-05_TeknikHizmet_Sozlesmesi.pdf`).
 Klasördeki belgelerden okunamayan metaveri (tutar, hesap kodu, tarih) eksiklerini **tek seferde
 kullanıcıya sor**; belge adlarından çıkarılabiliyorsa taslak değerle işaretle.
+
+### Birimlerden dış hizmet verisi toplama (02 sayfasının kaynağı)
+
+`02-Dış Hizmet` sayfasının verisi birimlerden standart formla toplanır:
+
+1. **Form üret:** `python scripts/veri_talebi_olustur.py <çıktı.xlsx> --yil 2026 --ay 10`
+   → 3 sayfa: **AÇIKLAMA** (neden istiyoruz, kapsam, md.4 sınıflandırması, kılavuz, tanımlar,
+   KVKK), **DIŞ HİZMET BEYAN FORMU** (SEDDK sütun yapısı + süreç sütunları; dropdown'lar:
+   E=md.4 sınıfı, H=bedel şekli, R/T=Evet/Hayır, V=Kurum onayı; tarih/tutar doğrulama;
+   500.000 TL aşan toplam bedel kırmızı koşullu biçim; 1 örnek satır), **LISTE** (dropdown
+   kaynakları — birim değiştirmez).
+2. **Formu birimlere gönder** (mail şablonu: `references/birim_maili.md`).
+3. **Dönen formları birleştir:** `python scripts/rapor_olustur.py --formdan <form.xlsx|klasör> -o girdi.json`
+   → örnek satır atlanır, tarih/tutar dönüşümü otomatik, md.4 etiketi denetlenir, SEDDK dışı
+   alanlar `_form_*` anahtarlarında korunur; `odemeler`/`ykk` listeleri ayrıca elle tamamlanır.
+4. Normal rapor akışı devreye girer (üret → doğrula → teslim).
+
+Formdaki KDV/hariç belirtilmeyen tutar, eksik hesap kodu, KD sınıfı gerekçesi gibi noktalar
+girdi doğrulamasında uyarı verir; birimle teyit etmeden uydurma değer yazma.
 
 ### Aylık rapor iş akışı
 
@@ -181,6 +200,12 @@ Kurum süre vermişse tarihleri karşılaştır, gecikmede tek cümle gerekçe �
 ## Script Kullanımı
 
 ```bash
+# BİRİM VERİ TALEP FORMU (dış hizmet beyanı — birimlere gönderilir)
+python scripts/veri_talebi_olustur.py Dis_Hizmet_Beyan_Formu.xlsx --yil 2026 --ay 10
+
+# DÖNEN FORMLARI GİRDİYE ÇEVİR (birden çok birim formunu birleştirir)
+python scripts/rapor_olustur.py --formdan formlar/ -o girdi.json
+
 # AYLIK RAPOR (xlsx + üst yazı birlikte)
 python scripts/rapor_olustur.py girdi.json --ustyazi
 python scripts/rapor_olustur.py girdi.json --validate-only      # sadece doğrula
@@ -244,10 +269,12 @@ eksik kapanış, karar tarihinden önceki yazı tarihi, eksik ek dosyası, ay d�
 
 ## Dosya Haritası
 
-- `references/veri_deseni.md` — Kurum Veri Deseni'nin sütun sütun talimatı + hücre notları + klasör sözleşmesi
-- `references/sablonlar.md` — olay bazlı yazı şablonları (tür 4-9 + birleşik), dil ve üslup notları
+- `references/veri_deseni.md` — Kurum Veri Deseni'nin sütun sütun talimatı + hücre notları + md.4 sınıflandırma listesi + klasör sözleşmesi
+- `references/sablonlar.md` — olay bazlı yazı şablonları (tür 4-9 + birleşik), §11 aylık rapor üst yazısı
+- `references/birim_maili.md` — birimlere gönderilecek veri talebi e-postası şablonu
 - `references/ornekler/` — 10 hazır girdi JSON'u (olay bazlı türler)
 - `assets/sirket_bilgileri.json` — muhatap, karar + raporlama künyeleri, imzacılar, şirket kodu
-- `scripts/rapor_olustur.py` — aylık rapor üretici: Veri Deseni xlsx + üst yazı docx
+- `scripts/veri_talebi_olustur.py` — birim dış hizmet beyan formu üretici (AÇIKLAMA + FORM + LISTE)
+- `scripts/rapor_olustur.py` — aylık rapor üretici (Veri Deseni xlsx + üst yazı docx) + `--formdan` form birleştirici
 - `scripts/yazi_olustur.py` — olay bazlı yazı üretici + kapsamlı girdi doğrulama
 - `scripts/dogrula.py` — sayfa yerleşimi/yer tutucu denetleyicisi (pymupdf)

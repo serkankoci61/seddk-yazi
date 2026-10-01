@@ -480,10 +480,10 @@ def build(data, sirket, out_path):
         add_text(p, line, bold=True)
         fmt(p, WD_ALIGN_PARAGRAPH.LEFT, after=0, line=1.15)
     p = right.paragraphs[0]
-    add_text(p, "Tarih: " + data.get("tarih", "[●GG.AA.YYYY]"), bold=True)
+    add_text(p, "Tarih: " + (data.get("tarih") or "[●GG.AA.YYYY]"), bold=True)
     fmt(p, WD_ALIGN_PARAGRAPH.LEFT, after=0, line=1.15)
     p = right.add_paragraph()
-    add_text(p, "Ref: " + data.get("ref", "[●YYYY/NNN]"), bold=True)
+    add_text(p, "Ref: " + (data.get("ref") or "[●YYYY/NNN]"), bold=True)
     fmt(p, WD_ALIGN_PARAGRAPH.LEFT, after=0, line=1.15)
 
     if data.get("dikkat"):

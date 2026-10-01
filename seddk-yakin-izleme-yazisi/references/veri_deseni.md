@@ -71,7 +71,7 @@ Satır 2 başlıklar (satır 3 tip bilgisi; A6 "Notlar", A7 not metni — bunlar
 | B | Ay | Sayısal | Gönderim dönemi ayı |
 | C | Şirket Adı | Karakter | Tam unvan |
 | D | Şirket Kodu | Sayısal | SEDDK şirket kodu |
-| E | Hizmet Konusu | Karakter | Not: **Sigortacılık Destek Hizmet Hakkında Yönetmelik md. 4**'e göre sınıflandırma; uymayan konular da ayrıca belirtilir |
+| E | Hizmet Konusu | Karakter | Not: **Sigortacılık Destek Hizmet Hakkında Yönetmelik md. 4**'e göre sınıflandırma; uymayan konular da ayrıca belirtilir — bkz. aşağıdaki md.4 sınıflandırma listesi |
 | F | Alınan Hizmetin Özet İçeriği | (serbest) | Kapsamın kısa betimi |
 | G | Hizmetin Alınma Amacı | Karakter | Gerekçe |
 | H | Hizmet Bedelinin Hesaplanma Şekli | "Üretime Bağlı/Hasara Bağlı/…'a bağlı/Belirli Bedel" | Not: sözleşmede belli ise o tutar; faydalanmaya bağlı ise tahmini tutar belirtilir |
@@ -87,6 +87,42 @@ Satır 2 başlıklar (satır 3 tip bilgisi; A6 "Notlar", A7 not metni — bunlar
 | R | Ödemenin Kaydedildiği Hesap Kodu | (sayısal) | MSUG hesap planı kodu |
 | S | YK Kararı Alındı mı? | Karakter | Evet/Hayır (+ tarih-sayı varsa) |
 | T | Ek | "YK Kararının PDF hali" | YK kararı PDF'i ek olarak iletilir |
+
+### E sütunu — md.4 sınıflandırma listesi (kurallar)
+
+SEDDK hücre notu (birebir): *"Sigortacılık Destek Hizmet Hakkında Yönetmeliğin 4'üncü maddesine
+göre sınıflandırılmalıdır. Söz konusu sınıflandırmaya uymayan konular da ayrıca olarak
+belirtilmelidir."* Rapor yazımında E sütununa `MD4(<bent>) — <bent adı>` etiketi yazılır
+(örn. `MD4(ğ) — Çağrı merkezi hizmetleri`); script etiketin geçerliliğini denetler.
+
+| Kod | Sınıf (Yönetmelik md.4 bent metni) |
+|---|---|
+| MD4(a) | Poliçe tanzimi ile tazminat tedvir ve ödenmesine ilişkin süreçlerde, sigorta eksperliği işinden ayrı olmak kaydıyla gerçekleştirilen teknik inceleme ve kontrol hizmetleri |
+| MD4(b) | Hasar öncesi risk azaltmaya ve hasar sonrası zarar azaltmaya yönelik hizmetler |
+| MD4(c) | Hasar ihbarı alma, dosya açma ve tamamlama hizmetleri |
+| MD4(ç) | Onarım ve bakım hizmetleri |
+| MD4(d) | Yedek parça tedarik ve kontrol hizmetleri |
+| MD4(e) | Yardım (asistans) hizmetleri |
+| MD4(g) | Tedavi ve yardım hizmetleri |
+| MD4(ğ) | Çağrı merkezi hizmetleri |
+| MD4(h) | Sovtaj yönetimi hizmetleri |
+| MD4(ı) | Rücu takip hizmetleri |
+| MD4(i) | Arşiv yönetimi hizmetleri |
+| MD4(j) | Ürün ve tarife hazırlama hizmetleri |
+| MD4(BS) | Bilgi sistemleri (md.4/2: yönetim, içerik tasarımı, erişim, kontrol, denetim, güncelleme, bilgi/rapor alma fonksiyonlarında karar gücü şirkette kalmak şartıyla) |
+| KD1 | Personel istihdamına ilişkin hizmet alımları (Yön. md.1/2-a) — kapsam dışı, raporda AYRICA |
+| KD2 | Avukatlık + vergi/hukuk danışmanlığı dâhil her türlü danışmanlık (Yön. md.1/2-b) — kapsam dışı, AYRICA |
+| KD3 | Reklam faaliyetleri (Yön. md.1/2-c) — kapsam dışı, AYRICA |
+
+Dikkat:
+- **(f) bendi yok**: "Sigortacılık hasar tedvir uygulamalarında tıbbi danışmanlık hizmetleri"
+  Danıştay 10. Daire 17/5/2021, E.:2016/1892; K.:2021/2273 kararıyla iptal — bu hizmeti
+  MD4(g) altında değerlendir.
+- Birden fazla bent kapsamına giren hizmette en baskın sınıf seçilir; diğerleri F sütununda
+  belirtilir.
+- KD sınıfları Yönetmeliğin md.1/2'sinde kapsam dışı tutulan hizmetlerdir; SEDDK hücre notu
+  gereği raporda ayrıca belirtildiklerinden formlarda toplanır ve E sütununa KD etiketiyle
+  yazılır (amacı G sütununda açıkça gerekçelendirilir).
 
 Sayfa 2 kapsam notu (A7'den): **"2026 yıl mali tablolarında giderleştirilmiş tüm sözleşmeler.
 (Ödenen veya daha önce ödenmekle birlikte, 2026 yılı mali tablolarına yansıtılan giderlere konu

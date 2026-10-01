@@ -1,4 +1,4 @@
-# SEDDK Yakın İzleme Yazısı Skill (v4)
+# SEDDK Yakın İzleme Yazısı Skill (v4.1)
 
 DOGA Sigorta A.Ş.'nin SEDDK yakın izleme kapsamında Kuruma göndereceği **aylık raporu** ve
 **olay bazlı resmi yazıları** hazırlayan agent skill'i.
@@ -23,11 +23,13 @@ seddk-yakin-izleme-yazisi/
 ├── assets/
 │   └── sirket_bilgileri.json          # muhatap, karar + raporlama künyeleri, imzacılar
 ├── references/
-│   ├── veri_deseni.md                 # Kurum Veri Deseni sütun sütun + hücre notları (v4 yeni)
-│   ├── sablonlar.md                   # yazı türleri + §11 aylık rapor üst yazısı (v4 yeni)
+│   ├── veri_deseni.md                 # Kurum Veri Deseni sütun sütun + hücre notları + md.4 sınıflandırması
+│   ├── sablonlar.md                   # yazı türleri + §11 aylık rapor üst yazısı
+│   ├── birim_maili.md                  # birimlere veri talebi e-posta şablonu (v4.1 yeni)
 │   └── ornekler/                      # 10 hazır girdi JSON'u (olay bazlı türler)
 └── scripts/
-    ├── rapor_olustur.py               # aylık rapor: Veri Deseni xlsx + üst yazı docx (v4 yeni)
+    ├── veri_talebi_olustur.py         # birim beyan formu üretici: AÇIKLAMA+FORM+LISTE, dropdown'lar (v4.1 yeni)
+    ├── rapor_olustur.py               # aylık rapor: Veri Deseni xlsx + üst yazı docx + --formdan birleştirici
     ├── yazi_olustur.py                # olay bazlı yazı docx üretici + doğrulama
     └── dogrula.py                     # sayfa yerleşimi/yer tutucu denetleyicisi (pymupdf)
 ```
@@ -54,6 +56,19 @@ python scripts/dogrula.py SEDDK_Sozlesme_Onay_Talebi.docx
 ```
 
 Bağımlılıklar: `openpyxl` + `python-docx` (üretim), `pymupdf` (doğrulama).
+
+## v4.1'de Yeniler (v4.0'a Göre)
+
+- **md.4 sınıflandırması:** Yönetmeliğin 4'üncü maddesi (a-j bentleri + md.4/2 bilgi
+  sistemleri + md.1/2 kapsam dışı grubu; f bendi Danıştay iptali) E sütunu için etiket
+  listesi olarak skill'e işlendi; `rapor_olustur.py` etiket doğrulaması yapar.
+- **`veri_talebi_olustur.py`:** Birimlerden dış hizmet verisi toplayan Excel formu —
+  AÇIKLAMA (neden/kapsam/sınıflandırma/kılavuz/KVKK), BEYAN FORMU (SEDDK sütun yapısı +
+  süreç sütunları; E/H/R/T/V dropdown, tarih/tutar doğrulama, 500k koşullu biçim, örnek
+  satır), LISTE (dropdown kaynakları).
+- **`--formdan`:** Dönen birim formlarını girdi JSON'una çevirir (çoklu form birleştirme,
+  örnek satır atlama, tarih/tutar dönüşümü, `_form_*` süreç alanları).
+- **`references/birim_maili.md`:** Birimlere gönderilecek e-posta şablonu.
 
 ## v4'te Yeniler (v3'e Göre)
 

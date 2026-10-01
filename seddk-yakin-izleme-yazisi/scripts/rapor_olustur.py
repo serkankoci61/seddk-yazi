@@ -20,6 +20,14 @@ Kullanım:
   python rapor_olustur.py girdi.json --validate-only               # sadece doğrula
   python rapor_olustur.py --tara                                   # veri klasörlerini envanterler
   python rapor_olustur.py --ornek-girdi                             # boş girdi iskeleti yazar
+  python rapor_olustur.py --formdan formlar/  -o girdi.json        # birim form(lar)ını girdiye çevirir
+
+--formdan: veri_talebi_olustur.py ile üretilmiş 'DIŞ HİZMET BEYAN FORMU' doldurulmuş
+xlsx'leri (dosya veya klasör; birden çok birim formu birleştirilir) okur, satırları doğrular
+(md.4 etiketi, tarih, tutar), sozlesmeler listesine çevirir ve girdi JSON'u yazar. Formdan
+gelen 'YK Karar Tarihi / Sayısı' ve 'Kurum Onayı Durumu' bilgileri notlar/uyarı olarak
+raporlanır; SEDDK formatı sütun dışı bilgi (beklenen YK kararı, birim/iletişim, dosya adları)
+girdi JSON'unda '_form_*' anahtarlarıyla saklanır (rapora taşınmaz, süreç takibi için).
 
 girdi.json şeması (yıl/ay zorunlu; listeler opsiyonel — boşsa sayfaya satır yazılmaz):
 {
@@ -70,6 +78,38 @@ AY_AD = ["", "Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran",
 TAR_RE = "%d.%m.%Y"
 SHEET1, SHEET2, SHEET3 = "01-100+", "02-Dış Hizmet", "03- YKK"
 ESIK = 100000.00  # 100 bin TL — 'üzeri' = aşan
+
+# Sigortacılık Destek Hizmetleri Hakkında Yönetmelik md.4 sınıfları (E sütunu etiketleri)
+MD4_KODLAR = ["a", "b", "c", "ç", "d", "e", "g", "ğ", "h", "ı", "i", "j", "BS"]
+KAPSAM_DISI_KODLAR = ["KD1", "KD2", "KD3"]
+
+
+def md4_etiket_ok(s):
+    """E sütunu değeri geçerli bir md.4 etiketi mi? ('MD4(x) — ...' veya 'KDx — ...')."""
+    if not s:
+        return False
+    s = str(s).strip()
+    up = s.upper()
+    for k in MD4_KODLAR:
+        if up.startswith(f"MD4({k.upper()})"):
+            return True
+    for k in KAPSAM_DISI_KODLAR:
+        if up.startswith(k.upper()):
+            return True
+    return False
+
+
+def md4_kod(s):
+    """Etiketten bent kodunu çıkarır: 'MD4(ğ) — Çağrı merkezi…' -> 'ğ'; 'KD2 — …' -> 'KD2'."""
+    s = str(s).strip()
+    up = s.upper()
+    for k in MD4_KODLAR:
+        if up.startswith(f"MD4({k.upper()})"):
+            return k
+    for k in KAPSAM_DISI_KODLAR:
+        if up.startswith(k.upper()):
+            return k
+    return None
 
 # girdi anahtarı -> xlsx sütun sırası (A'dan itibaren)
 S1_KEYS = ["yil", "ay", "sirket_adi", "sirket_kodu", "alici", "aciklama", "dayanak",
@@ -198,6 +238,15 @@ def validate(girdi, sirket, base):
         if hs and not any(x in hs for x in ("Bağlı", "Belirli Bedel")):
             warnings.append(f"{tag}.hesaplama_sekli='{hs}' — Veri Deseni tip satırı "
                             "'Üretime Bağlı/Hasara Bağlı/…'a bağlı/Belirli Bedel' bekliyor")
+        hk = str(s.get("hizmet_konusu", ""))
+        if hk and not md4_etiket_ok(hk):
+            warnings.append(f"{tag}.hizmet_konusu='{hk[:60]}' — md.4 etiketi bekleniyor "
+                            "('MD4(x) — …' veya 'KDx — …'; SEDDK hücre notu: Yönetmeliğin "
+                            "4'üncü maddesine göre sınıflandırma, uymayanlar ayrıca belirtilir)")
+        kod = md4_kod(hk) if hk else None
+        if kod in KAPSAM_DISI_KODLAR and not s.get("amac"):
+            errors.append(f"{tag}: kapsam dışı (KD) sınıfı seçilmiş ama amacı/why boş — "
+                          "sınıflandırmaya uymayan konular ayrıca belirtilmelidir")
         if str(s.get("yk_karari", "")).lower().startswith("evet") and not s.get("yk_pdf"):
             warnings.append(f"{tag}: yk_karari='Evet' ama yk_pdf verilmedi — T sütunu boş kalacak")
         if s.get("sonlanma") not in (None, "") and parse_tarih(s.get("bitis")) is None:
@@ -423,9 +472,12 @@ def build_ustyazi_girdi(girdi, sirket, xlsx_name):
         ekler.append(f"Yönetim kurulu kararlarının PDF suretleri ({len(ykk)} adet)")
 
     uy = girdi.get("ustyazi") or {}
+    tar = uy.get("tarih")
+    if not tar or str(tar).startswith("[●"):  # yer tutucu tarih validate'yi boş bıraksın
+        tar = None
     data = {
         "ref": uy.get("ref", "[●YYYY/NNN]"),
-        "tarih": uy.get("tarih", "[●GG.AA.YYYY]"),
+        "tarih": tar,
         "konu": f"Yakın İzleme Kapsamında {ayad} {yil} Dönemine İlişkin Rapor Sunumu",
         "ilgi": ilgi,
         "govde": govde,
@@ -433,6 +485,201 @@ def build_ustyazi_girdi(girdi, sirket, xlsx_name):
         "imza": kunye.get("imzacilar") or sirket.get("varsayilan_imzacilar"),
     }
     return data
+
+
+# ---------- birim formundan girdiye dönüşüm ----------
+FORM_SHEET = "DIŞ HİZMET BEYAN FORMU"
+# form sütun harfi -> (girdi anahtarı, dönüştürme)
+# Sıra: A Yil, B Ay, C SirketAdi, D SirketKodu, E HizmetKonusu, F Ozet, G Amac,
+#       H HesapSekli, I BirimMaliyet, J Saglayici, K Baslangic, L Bitis, M Sonlanma,
+#       N ToplamBedel, O Tahakkuk, P Odene, Q HesapKodu, R YKAlindi, S YKTarihSayi,
+#       T YKAlinacak, U DosyaAdlari, V KurumOnay, W BirimIletisim
+FORM_MAP = [
+    ("E", "hizmet_konusu", None),
+    ("F", "ozet_icerik", None),
+    ("G", "amac", None),
+    ("H", "hesaplama_sekli", None),
+    ("I", "birim_maliyeti", None),
+    ("J", "saglayici", None),
+    ("K", "baslangic", "tarih"),
+    ("L", "bitis", "tarih"),
+    ("M", "sonlanma", "tarih"),
+    ("N", "toplam_bedel", "sayi"),
+    ("O", "tahakkuk", "sayi"),
+    ("P", "odenen", "sayi"),
+    ("Q", "hesap_kodu", None),
+    ("R", "yk_karari", None),
+    ("S", "yk_karar_tarih_sayi", None),     # form only -> _form_yk_detay
+    ("T", "yk_alinacak", None),            # form only -> _form_yk_beklenen
+    ("U", "dosya_adlari", None),           # form only -> _form_dosyalar (PDF adları)
+    ("V", "kurum_onay", None),             # form only -> _form_kurum_onay
+    ("W", "birim_iletisim", None),         # form only -> _form_birim
+]
+
+
+def form_hucre_to_str(v):
+    if v is None:
+        return ""
+    if isinstance(v, datetime):
+        return v.strftime("%d.%m.%Y")
+    return str(v).strip()
+
+
+def form_sayi(v):
+    """'150.000,00' / '150000,50' / 150000 / None -> float|None; çözülemiyorsa None."""
+    s = form_hucre_to_str(v).replace(" TL", "").strip()
+    if not s or s in ("—", "-"):
+        return None
+    if isinstance(v, (int, float)):
+        return float(v)
+    s2 = s.replace(".", "").replace(",", ".")
+    try:
+        return float(s2)
+    except ValueError:
+        try:
+            return float(s.replace(",", "."))
+        except ValueError:
+            return None
+
+
+def formdan_oku(path, uyari_listesi):
+    """Tek bir birim formunu okuyup sozlesme satırları listesi döner."""
+    from openpyxl import load_workbook
+    wb = load_workbook(path, data_only=True)
+    if FORM_SHEET not in wb.sheetnames:
+        uyari_listesi.append(f"{os.path.basename(path)}: '{FORM_SHEET}' sayfası yok — atlandı")
+        return []
+    ws = wb[FORM_SHEET]
+    rows = []
+    # satır 1 başlık şeridi, satır 2 sütun başlıkları, veri 3'ten itibaren
+    r = 3
+    bos_say = 0
+    while bos_say < 5 and r <= ws.max_row:
+        hucreler = {}
+        tamamen_bos = True
+        for col, key, tip in FORM_MAP:
+            v = ws[f"{col}{r}"].value
+            if tip == "tarih":
+                hucreler[key] = form_hucre_to_str(v)
+            elif tip == "sayi":
+                hucreler[key] = form_sayi(v)
+            else:
+                hucreler[key] = form_hucre_to_str(v)
+            if hucreler[key] not in ("", None):
+                tamamen_bos = False
+        if tamamen_bos:
+            bos_say += 1
+        else:
+            bos_say = 0
+            # örnek satır atlama (üretimde sarı satır 'ÖRNEK' içerir)
+            ozet = str(hucreler.get("ozet_icerik", ""))
+            if "ÖRNEK SATIR" in ozet.upper():
+                pass
+            else:
+                rows.append(hucreler)
+        r += 1
+    return rows
+
+
+def form_sozlesmeye_cevir(h, kaynak_dosya):
+    """Form satırını girdi sozlesmeler[] şemasına çevirir; SEDDK dışı alanlar _form_*."""
+    dosyalar = [d.strip() for d in str(h.get("dosya_adlari", "")).replace("/", ",").split(",") if d.strip()]
+    sozlesme_pdf = dosyalar[0] if dosyalar else None
+    yk_pdf = dosyalar[1] if len(dosyalar) > 1 else None
+    yk_karari = str(h.get("yk_karari", ""))
+    # SEDDK S sütunu 'Karakter' — 'Evet'/'Hayır'; detayı _form_yk_detay'da
+    sonuc = {
+        "hizmet_konusu": h.get("hizmet_konusu"),
+        "ozet_icerik": h.get("ozet_icerik"),
+        "amac": h.get("amac"),
+        "hesaplama_sekli": h.get("hesaplama_sekli"),
+        "birim_maliyeti": h.get("birim_maliyeti") or None,
+        "saglayici": h.get("saglayici"),
+        "sozlesme_pdf": sozlesme_pdf,
+        "baslangic": h.get("baslangic"),
+        "bitis": h.get("bitis"),
+        "sonlanma": h.get("sonlanma") or None,
+        "toplam_bedel": h.get("toplam_bedel"),
+        "tahakkuk": h.get("tahakkuk") if h.get("tahakkuk") is not None else 0,
+        "odenen": h.get("odenen") if h.get("odenen") is not None else 0,
+        "hesap_kodu": h.get("hesap_kodu") or None,
+        "yk_karari": yk_karari,
+        "yk_pdf": yk_pdf,
+        # form-only süreç alanları
+        "_form_yk_detay": h.get("yk_karar_tarih_sayi"),
+        "_form_yk_beklenen": h.get("yk_alinacak"),
+        "_form_kurum_onay": h.get("kurum_onay"),
+        "_form_birim": h.get("birim_iletisim"),
+        "_form_dosyalar": dosyalar,
+        "_form_kaynak": os.path.basename(kaynak_dosya),
+    }
+    return sonuc
+
+
+def formlari_birlestir(kaynak, out_json):
+    """Klasör/dosya(lar)daki formları okuyup tek girdi JSON'u yazar (sozlesmeler listesi)."""
+    files = []
+    if os.path.isdir(kaynak):
+        for f in sorted(os.listdir(kaynak)):
+            if f.lower().endswith(".xlsx") and not f.startswith("~$"):
+                files.append(os.path.join(kaynak, f))
+    elif os.path.isfile(kaynak):
+        files = [kaynak]
+    else:
+        sys.exit(f"Form kaynağı bulunamadı: {kaynak}")
+    if not files:
+        sys.exit("Form dosyası bulunamadı (.xlsx).")
+
+    uyarilar = []
+    satirlar = []
+    yil = ay = None
+    for f in files:
+        rows = formdan_oku(f, uyarilar)
+        for h in rows:
+            satirlar.append(form_sozlesmeye_cevir(h, f))
+        # dönem bilgisini ilk formdan al
+        if rows and yil is None:
+            wb = None
+    # yıl/ay formların A/B sütunundan okunmalı — formdan_oku'ya ekle:
+    # (formda satır bazında A=yıl, B=ay ön dolu geliyor)
+    if satirlar:
+        from openpyxl import load_workbook
+        wb0 = load_workbook(files[0], data_only=True)
+        ws0 = wb0[FORM_SHEET]
+        # ilk dolu satırdan yıl/ay al
+        for rr in range(3, ws0.max_row + 1):
+            yv, av = ws0[f"A{rr}"].value, ws0[f"B{rr}"].value
+            if yv and av:
+                try:
+                    yil = int(yv); ay = int(av)
+                except (TypeError, ValueError):
+                    pass
+                break
+    girdi = {
+        "yil": yil or 2026,
+        "ay": ay or 10,
+        "sirket_kodu": None,
+        "odemeler": [],
+        "sozlesmeler": satirlar,
+        "ykk": [],
+        "notlar": [],
+        "ustyazi": {"ref": "[●YYYY/NNN]", "tarih": "[●GG.AA.YYYY]"},
+    }
+    with open(out_json, "w", encoding="utf-8") as f:
+        json.dump(girdi, f, ensure_ascii=False, indent=2)
+    print(f"{len(files)} form dosyası okundu, {len(satirlar)} sözleşme satırı çıkarıldı.")
+    print(f"Girdi yazıldı: {out_json}")
+    for u in uyarilar:
+        print(f"Uyarı: {u}", file=sys.stderr)
+    for i, s in enumerate(satirlar):
+        ko = md4_kod(s.get("hizmet_konusu") or "")
+        if ko is None:
+            print(f"UYARI: satır {i+1} ({s.get('saglayici', '?')[:40]}): hizmet_konusu "
+                  "md.4 etiketi taşımıyor — elle sınıflandırın", file=sys.stderr)
+        if s.get("_form_kurum_onay") and "bekleniyor" in str(s["_form_kurum_onay"]).lower():
+            print(f"NOT: satır {i+1}: Kurum onayı bekleniyor — 500 bin TL aşan sözleşme, "
+                  "imza öncesi onay süreci kontrol edilmeli", file=sys.stderr)
+    return out_json
 
 
 # ---------- CLI ----------
@@ -450,7 +697,15 @@ def main():
     ap.add_argument("--validate-only", action="store_true")
     ap.add_argument("--tara", action="store_true", help="Veri klasörlerini envanterle")
     ap.add_argument("--ornek-girdi", action="store_true", help="Boş girdi iskeleti yaz (ornek.json)")
+    ap.add_argument("--formdan", metavar="KAYNAK",
+                    help="Birim form(lar)ını (xlsx dosya ya da klasör) girdi JSON'una çevir")
+    ap.add_argument("-o", "--output", default=None, help="--formdan çıktı JSON yolu")
     a = ap.parse_args()
+
+    if a.formdan:
+        out = a.output or "girdi_formdan.json"
+        formlari_birlestir(a.formdan, out)
+        return
 
     if a.tara:
         base = a.veri_dizini or os.getcwd()
