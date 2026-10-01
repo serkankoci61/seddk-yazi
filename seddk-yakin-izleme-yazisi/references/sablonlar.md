@@ -182,6 +182,49 @@ Ortak kapanış cümleleri (girintisiz, son satır):
 
 ---
 
+## 11. Aylık yakın izleme raporu (Veri Deseni sunum yazısı)
+
+**Kaynak:** Kurumun E-51048673-010.05-5045010 sayılı "Kuruma Yapılacak Raporlamalar Hk." üst
+yazısı. Karar md. 1 kapsamındaki bilgilerin (100 bin TL üzeri ödemeler, YK kararları, dış hizmet
+alımları) **aylık** sunumunu düzenler; Veri Deseni'ne (`references/veri_deseni.md`) ve girdi
+şemasına (`scripts/rapor_olustur.py` docstring) bakmadan doldurma. `rapor_olustur.py --ustyazi`
+bu şablonu otomatik kurar — elle yazma, girdi JSON'unu kur.
+
+**Konu:** `Yakın İzleme Kapsamında <Ay Adı> <Yıl> Dönemine İlişkin Rapor Sunumu`
+
+**İlgi:** (a) Kurum üst yazısı + 1937 sayılı Karar künyesi; (b) E-51048673-010.05-5045010
+sayılı raporlama üst yazısı.
+
+**Gövde iskeleti** (script üretir; burada denetim içindir):
+1. Ortak giriş (İlgi (a)).
+2. İlgi (b) atfıyla raporlama yükümlülüğünün tekrarı: "... işbu yazı ekindeki şekil ve formatta,
+   iç denetim müdürü ve iç sistemlerden sorumlu yönetim kurulu üyesi tarafından imzalı yazı ile
+   biten aya ilişkin raporun her ayın 15'ine kadar düzenli olarak sunulması hususunda bilgi
+   verilmiştir."
+3. Dönem cümlesi: "<Ay> <Yıl> dönemine ilişkin rapor ekte sunulmuştur."
+4. Ödeme beyanı: sayı + toplam tutar; **yoksa** "100 bin TL üzeri ödeme gerçekleşmemiştir."
+5. Dış hizmet beyanı: "2026 yılı mali tablolarında giderleştirilmiş sözleşmeler..."; **yoksa**
+   "...rapora konu dış hizmet alımı sözleşmesi bulunmamaktadır."
+6. YKK beyanı: sayı; **yoksa** "Dönem içinde yönetim kurulu kararı alınmamıştır."
+7. (Opsiyonel) `notlar` alanından gelen ek beyanlar — örn. hukuk ödemelerinin günlük bildirim
+   rejimiyle ayrıca takip edildiği atfı.
+8. Kapanış: **"Bilgilerinize arz ederiz."**
+
+**İmzacılar:** iç denetim müdürü (Serkan KOÇ) + iç sistemlerden sorumlu yönetim kurulu üyesi
+(raporlama üst yazısının şartı — ad kullanıcıdan teyit edilmeli). Genel yazışma imza ikilisi
+(Müdür/GMY) burada KULLANILMAZ.
+
+**Ekler:** Ek-1 Veri Deseni (.xlsx); ardından dayanak belgeler, sözleşme PDF'leri, YK kararı
+PDF'leri (Veri Deseni satır sırasıyla).
+
+**Süre:** biten ayın izleyen ayının **15'i**. Gecikiyorsa tek cümle gerekçe (örn. "bankadan
+alınan dekont yazılarının temin süresi") — savunma değil, bilgi.
+
+**Boş dönem kuralı:** işlem olmasa da rapor gönderilir; sayfalar boş bırakılır (satır açılmaz)
+ve gövdede "gerçekleşmemiştir/alınmamıştır" beyanı verilir.
+
+---
+
 ## Dil ve üslup notları
 
 - Resmî, kısa, edilgen-nötr: "arz ederiz", "sunulmuştur", "bildirilmiştir".

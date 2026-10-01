@@ -1,6 +1,8 @@
 {
   "sirket_adi": "DOGA SİGORTA ANONİM ŞİRKETİ",
   "sirket_adi_kisa": "DOGA SİGORTA A.Ş.",
+  "sirket_kodu": null,
+  "_sirket_kodu_notu": "SEDDK şirket kodu (Veri Deseni D sütunu için ZORUNLU). Bilinen ilk değerde buraya sayı olarak yazılmalı.",
   "muhatap_satirlari": [
     "SİGORTACILIK VE ÖZEL EMEKLİLİK",
     "DÜZENLEME VE DENETLEME KURUMU",
@@ -13,6 +15,19 @@
     "karar_sayisi": "1937",
     "ana_ilgi": "Kurumunuzun E-97354901-045.01-5033535 sayılı yazısı (23.09.2026 tarih ve 1937 sayılı Kurul Kararı).",
     "kurum_kep": "seddk@hs01.kep.tr"
+  },
+  "raporlama_kunyesi": {
+    "ust_yazi_sayisi": "E-51048673-010.05-5045010",
+    "ust_yazi_tarihi": "30.09.2026",
+    "ust_yazi_konusu": "Kuruma Yapılacak Raporlamalar Hk.",
+    "ilgi": "Kurumunuzun E-51048673-010.05-5045010 sayılı yazısı (Kuruma Yapılacak Raporlamalar Hk.).",
+    "periyot": "aylık — biten aya ilişkin rapor, her ayın 15'ine kadar",
+    "imzacilar": [
+      {"ad": "Serkan KOÇ", "unvan": "İç Denetim Müdürü"},
+      {"ad": "[●Ad SOYAD]", "unvan": "Yönetim Kurulu Üyesi (İç Sistemlerden Sorumlu)"}
+    ],
+    "_imzaci_notu": "Üst yazı raporun 'iç denetim müdürü ve iç sistemlerden sorumlu yönetim kurulu üyesi' tarafından imzalanmasını şart koşuyor. Serkan KOÇ'un iç denetim müdürü olduğu ve iç sistemlerden sorumlu YK üyesinin kimliği kullanıcı tarafından teyit edilmelidir.",
+    "format_dosyasi": "SEDDK Yakın İzleme Formatı_01092026.xlsx (Veri Deseni)"
   },
   "varsayilan_imzacilar": [
     {
